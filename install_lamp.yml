@@ -4,10 +4,16 @@
     yum: 
       name: httpd 
       state: present 
-  - name: Install php version {{phpversion}}
-    yum: 
-      name: "php-{{phpversion}}"
-      state: installed
+  - block: 
+    - name: Install php version {{phpversion}}
+      yum: 
+        name: "php-{{phpversion}}"
+        state: installed
+    rescue:
+    - name: Install the latest version of PHP
+      yum:
+        name: php
+        state: latest     
   - name: Installation de Mariadb 
     yum: 
       name: mariadb-server
