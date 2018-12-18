@@ -1,0 +1,33 @@
+- hosts: all 
+  tasks: 
+  - name: Install the web server 
+    yum: 
+      name: httpd 
+      state: present 
+  - name: Install php version {{phpversion}}
+    yum: 
+      name: "php-{{phpversion}}"
+      state: installed
+  - name: Installation de Mariadb 
+    yum: 
+      name: mariadb-server
+      state: latest 
+  - name: Configure virtualhost 
+    template:
+      src: vhost.conf 
+      dest: /etc/httpd/conf.d/ldcvhost.conf.disable
+  - name: Demarrage des services 
+    service: 
+      name: "{{item}}"
+      state: started 
+    with_items:
+      - httpd 
+      - mariadb
+  - name: Ensure Firewalld is installed 
+    yum:
+      name: firewalld 
+      state: present 
+  - name: Ensure Firewalld is stopped 
+    service:
+      name: firewalld 
+      state: stopped 
