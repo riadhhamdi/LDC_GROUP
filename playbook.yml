@@ -1,0 +1,22 @@
+- hosts: all 
+  tasks: 
+  - name: install the web server 
+    yum: 
+      name: httpd 
+      state: latest 
+  - name: Install the database 
+    yum:
+      name: mariadb-server
+      state: latest
+  - name: Install PHP 
+    yum: 
+      name: php
+      state: latest
+  - name: Ensure the firewalld is installed 
+    yum:
+      name: firewalld 
+      state: installed 
+  - name: Ensure firewalld is stopped 
+    service: 
+      name: firewalld 
+      state: stopped 
